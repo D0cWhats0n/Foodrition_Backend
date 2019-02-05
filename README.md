@@ -1,2 +1,2 @@
-# Foodrition_Backend
-Backend for a food classification web app named Foodrition
+# Foodrition_app
+Web app for classifying meals.
