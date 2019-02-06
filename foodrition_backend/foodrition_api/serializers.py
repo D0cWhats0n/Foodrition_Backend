@@ -12,4 +12,5 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class FoodSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Food
-        fields = ('name', 'protein')
+        fields = ('name', 'water_g', 'energy_kcal', 'protein_g', 'lipid_g',
+                  'carbohydrts_g', 'fiber_g', 'sugar_g')
