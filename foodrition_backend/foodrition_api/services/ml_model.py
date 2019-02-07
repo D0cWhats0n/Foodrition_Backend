@@ -3,12 +3,13 @@ import keras.model import model_from_json
 from keras.applications.resnet50 import preprocess_input
 import json
 import cv2
+from os.path import join, dirname
 
 
 class ModelFactory(object):
     model_cache_key = 'model_cache'
     map_cache_key = 'map_cache'
-    model_folder = './model'
+    model_folder = join(dirname(__file__), './model')  # get current directory'
     img_res = (224, 224)
 
     @staticmethod
