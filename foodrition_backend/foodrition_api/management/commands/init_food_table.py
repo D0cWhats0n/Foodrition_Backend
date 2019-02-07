@@ -32,7 +32,7 @@ class Command(BaseCommand):
                     ash_g=row['Ash_(g)'],
                     carbohydrt_g=row['Carbohydrt_(g)']
                     )
-            self.stdout.write(self.style.SUCCESS("Succesfully initilized food table from file."))
+            self.stdout.write(self.style.SUCCESS("Succesfully initialized food table from file."))
         except:
             self.stdout.write(self.style.ERROR("Could not initialize food table from file:"))
             raise
