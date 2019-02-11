@@ -55,3 +55,7 @@ class Food(models.Model):
     gmwt_desc2 = models.FloatField(null=True, blank=True)
     refuse_pct = models.FloatField(null=True, blank=True)
 
+
+class FoodImage(models.Model):
+    img = models.ImageField(null=False)
+    classification = models.IntegerField(null=True)
