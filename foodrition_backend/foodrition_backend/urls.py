@@ -16,6 +16,8 @@ Including another URLconf
 from django.urls import include, path
 from rest_framework import routers
 from foodrition_backend import views
+from foodrition_api.startup import foodrition_api_startup_func
+from django.conf.urls import url
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
@@ -25,5 +27,8 @@ router.register(r'food', views.FoodViewSet)
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^classify', views.ClassificationAPI.as_view())
 ]
+
+foodrition_api_startup_func()
