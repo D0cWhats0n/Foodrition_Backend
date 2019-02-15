@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from foodrition_api.services.ml_model import ModelFactory
 from rest_framework.decorators import api_view
-
+from django.http import JsonResponse
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -29,19 +29,32 @@ class FoodViewSet(viewsets.ModelViewSet):
 
 
 class ClassificationAPI(APIView):
+    """
+    API for classifying images. A JSON containing the classified id
+    'pred_id', the corresponding model class description 'food_descr'
+    and a mapping to the corresponding nutrition description is 
+    returned.
+    """
     parser_class = (FileUploadParser,)
 
     def post(self, request, format=None):
+        print("Request to classify file")
         if 'file' not in request.data:
             raise ParseError("Empty content")
 
         f = request.data['file']
         
-        predict_id = ModelFactory.predict(f)
+        pred_id, food_descr, nutr_descr = ModelFactory.predict(f)
+        print(f"Predicted Id for file upload {pred_id}")
+
+        pred_dict = {
+            'id': int(pred_id),
+            'food_descr': food_descr,
+            'nutr_descr': nutr_descr
+        }
 
         food_image = FoodImage()
         food_image.img.save(f.name, f, save=True)
-        food_image.classification = predict_id
+        food_image.classification = pred_id
         food_image.save()
-        print(f"Predicted Id for file upload {predict_id}")
-        return Response(status=status.HTTP_200_OK)
+        return JsonResponse(pred_dict, status=status.HTTP_200_OK)

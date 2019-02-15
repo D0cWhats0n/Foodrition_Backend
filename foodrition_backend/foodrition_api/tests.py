@@ -12,6 +12,6 @@ class MLModelTest(TestCase):
 
         # Make also sure that it lands in cache
         model = cache.get(ModelFactory.model_cache_key)     
-        model_map = cache.get(ModelFactory.map_cache_key)
+        model_map = cache.get(ModelFactory.model_map_cache_key)
         assert(hasattr(model, 'predict'))
         assert(isinstance(model_map, dict))
