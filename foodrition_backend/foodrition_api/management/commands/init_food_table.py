@@ -19,18 +19,21 @@ class Command(BaseCommand):
                              dtype={'Shrt_Desc': str, 'Water_g': np.float64, 
                                     'Energ_Kcal': np.float64, 'Protein_(g)': np.float64,
                                     'Lipid_Tot_(g)': np.float64, 'Ash_(g)': np.float64,
-                                    'Carbohydrt_(g)': np.float64})
+                                    'Carbohydrt_(g)': np.float64, 
+                                    'Fiber_TD_(g)': np.float64})
 
             for iter_row in df.iterrows():
                 row = iter_row[1]
                 _, created = Food.objects.get_or_create(
+                    ndb_no=row['NDB_No'],
                     name=row['Shrt_Desc'],
                     water_g=row['Water_(g)'],
                     energy_kcal=row['Energ_Kcal'],
                     protein_g=row['Protein_(g)'],
                     lipid_g=row['Lipid_Tot_(g)'],
                     ash_g=row['Ash_(g)'],
-                    carbohydrt_g=row['Carbohydrt_(g)']
+                    carbohydrt_g=row['Carbohydrt_(g)'],
+                    fiber_g=row['Fiber_TD_(g)']
                     )
             self.stdout.write(self.style.SUCCESS("Succesfully initialized food table from file."))
         except:

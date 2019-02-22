@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Food(models.Model):
+    ndb_no = models.IntegerField(null=False, unique=True)
     name = models.CharField(null=False, max_length=100)
     water_g = models.FloatField(null=True, blank=True)
     energy_kcal = models.IntegerField(null=True, blank=True)

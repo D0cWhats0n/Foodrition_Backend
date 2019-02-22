@@ -27,6 +27,17 @@ class FoodViewSet(viewsets.ModelViewSet):
     queryset = Food.objects.all().order_by('id')
     serializer_class = FoodSerializer
 
+    def get_queryset(self):
+        """ allow rest api to filter by description """
+        queryset = Food.objects.all()
+        name = self.request.query_params.get('name', None)
+        ndb_no = self.request.query_params.get('ndb_no', None)
+        if name is not None:
+            queryset = queryset.filter(name=name)
+        elif ndb_no is not None:
+            queryset = queryset.filter(ndb_no=ndb_no)
+        return queryset
+
 
 class ClassificationAPI(APIView):
     """
@@ -44,17 +55,12 @@ class ClassificationAPI(APIView):
 
         f = request.data['file']
         
-        pred_id, food_descr, nutr_descr = ModelFactory.predict(f)
-        print(f"Predicted Id for file upload {pred_id}")
+        pred = ModelFactory.predict(f)
+        print(f"Predicted Id for file upload {pred.pred_id}")
 
-        pred_dict = {
-            'id': int(pred_id),
-            'food_descr': food_descr,
-            'nutr_descr': nutr_descr
-        }
-
+        print("Object dict: ", pred.__dict__)    
         food_image = FoodImage()
         food_image.img.save(f.name, f, save=True)
-        food_image.classification = pred_id
+        food_image.classification = pred.pred_id
         food_image.save()
-        return JsonResponse(pred_dict, status=status.HTTP_200_OK)
+        return JsonResponse(pred.__dict__, status=status.HTTP_200_OK)
