@@ -6,18 +6,12 @@
 </template>
 
 <script>
-import Classify from './components/Classify.vue'
-import Impressum from './components/Impressum.vue'
 import Navbar from './components/Navbar.vue'
-import Foodcomposition from './components/FoodComposition.vue'
 
 export default {
   name: 'app',
   components: {
-    Impressum,
-    Classify,
-    Navbar,
-    Foodcomposition
+    Navbar
   }
 }
 </script>

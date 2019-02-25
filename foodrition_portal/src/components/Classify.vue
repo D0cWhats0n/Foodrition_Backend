@@ -24,9 +24,10 @@
       </div>
       <b-row class="justify-content-center mt-5" v-if="!notClassified">
         <b-col class="col-md-4">
-         <foodcomposition v-bind:predFood="predFood"></foodcomposition>
+          <foodcomposition v-bind:predFood="predFood"></foodcomposition>
         </b-col>
         <b-col class="col-md-4">
+          <foodtable v-bind:predFood="predFood"></foodtable>
         </b-col>
         <b-col class="col-md-4">
         </b-col>       
@@ -40,6 +41,7 @@ import vue2Dropzone from 'vue2-dropzone'
 import axios from 'axios'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import Foodcomposition from './FoodComposition.vue'
+import Foodtable from './FoodTable.vue'
 
 import Food from '../models/food.js'
 
@@ -47,7 +49,8 @@ export default {
   name: 'classify',
   components: {
     vueDropzone: vue2Dropzone,
-    'foodcomposition': Foodcomposition
+    'foodcomposition': Foodcomposition,
+    'foodtable': Foodtable
   },
   data: function () {
     return {
@@ -98,7 +101,7 @@ export default {
       food.protein_g= food_resp['protein_g'];
       food.water_g= food_resp['water_g'];
       food.fiber_g= food_resp['fiber_g'];
-      food.carbohydtr_g= food_resp['carbohydtr_g'];
+      food.carbohydrt_g= food_resp['carbohydrt_g'];
       food.energy_kcal= food_resp['energy_kcal'];
       food.sugar_g= food_resp['sugar_g'];
       food.lipid_g= food_resp['lipid_g'];

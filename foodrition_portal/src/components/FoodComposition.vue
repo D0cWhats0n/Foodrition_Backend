@@ -31,19 +31,19 @@ export default {
   methods:{
     get_chart_columns(food){
       var columns = []
-      if (food.water_g){
+      if (food.water_g !== null){
         columns.push(['water', food.water_g])
       }
-      if (food.fiber_g){
+      if (food.fiber_g !== null){
         columns.push(['fiber', food.fiber_g])
       }
-      if (food.protein_g){
+      if (food.protein_g !== null){
         columns.push(['protein', food.protein_g])
       }
-      if (food.carbohydtr_g){
-        columns.push(['carbohydrate', food.carbohydtr_g])
+      if (food.carbohydrt_g !== null){
+        columns.push(['carbohydrate', food.carbohydrt_g])
       }
-      if (food.lipid_g){
+      if (food.lipid_g !== null){
         columns.push(['lipid', food.lipid_g])
       }
       return columns
