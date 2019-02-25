@@ -1,5 +1,5 @@
 <template>
-  <div id="foodcomposition">
+  <div class="justify-content-center" id="foodcomposition">
     <h2 class="text-center">Food Composition</h2>
     <div id='donut_chart'></div>
   </div>  
@@ -11,33 +11,65 @@ import Food from '../models/food.js'
 
 export default {
   name: 'foodcomposition',
+  props: {
+    predFood: Food
+  },
+  watch:{
+    predFood: function(newVal, oldVal){
+      console.log("predFood changed!")
+      console.log(newVal)
+      this.donut_chart.load({
+        columns: this.get_chart_columns(newVal)
+      }) 
+    }
+  },
   data: function () {
     return {
       donut_chart: null
     }
   },
   methods:{
+    get_chart_columns(food){
+      var columns = []
+      if (food.water_g){
+        columns.push(['water', food.water_g])
+      }
+      if (food.fiber_g){
+        columns.push(['fiber', food.fiber_g])
+      }
+      if (food.protein_g){
+        columns.push(['protein', food.protein_g])
+      }
+      if (food.carbohydtr_g){
+        columns.push(['carbohydrate', food.carbohydtr_g])
+      }
+      if (food.lipid_g){
+        columns.push(['lipid', food.lipid_g])
+      }
+      return columns
+    }
   },
   mounted(){
-    console.log("Mounting foodcomposition")
+    console.log("Mounting foodcomposition with ", this.predFood)
     this.donut_chart= c3.generate({
-      bindto: '#donut_chart',
-      size:{
-        width: 350,
-        height: 350
-      },
-      data: {
-        columns: [
-          ['data1', 30],
-          ['data2', 120]
-        ],
-        type : 'donut',
-        colors: {
-          "data1": '#343a40', 
-          "data2": '#6c757d'
-        }
-      }
-    })
-  }
+          bindto: '#donut_chart',
+          size:{
+            width: 350,
+            height: 350
+          },
+          data: {
+            columns: this.get_chart_columns(this.predFood),
+            type : 'donut',
+            colors: {
+              "water": '#ecf0f1', 
+              "protein": '#3498DB',
+              "carbohydrate": "#F39C12",
+              "fiber": '#20c997',
+              "lipid": '#E74C3C'
+            }
+          }
+        })
+    }
 }
+
 </script>

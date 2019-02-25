@@ -1,6 +1,7 @@
 class Food{
-    constructor(descr, water_g, energy_kcal, protein_g, carbohydtr_g, 
+    constructor(food_class, descr, water_g, energy_kcal, protein_g, carbohydtr_g, 
                 fiber_g, sugar_g, lipid_g){
+        this.food_class = food_class;
         this.descr = descr;
         this.water_g = water_g;
         this.energy_kcal = energy_kcal;
@@ -11,3 +12,5 @@ class Food{
         this.lipid_g = lipid_g;
     }
 }
+
+export default Food;

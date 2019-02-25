@@ -1,7 +1,7 @@
 <template>
   <div id="classify">
     <b-container>
-      <b-collapse id="classify_collapse" v-model="not_classified">
+      <b-collapse id="classify_collapse" v-model="notClassified">
         <b-row class="justify-content-center mt-5">
           <b-col class="col-md-2"><img style="margin:auto; display:block" src="../assets/rice.svg" width="100" height="100"></b-col>
           <b-col class="col-md-2"><img style="margin:auto; display:block" src="../assets/lettuce.svg" width="100" height="100"></b-col>
@@ -17,14 +17,14 @@
         <vue-dropzone id="dropzone"  class="mt-5" ref="myVueDropzone" :destroyDropzone="false" @vdropzone-removed-file="removedFile" @vdropzone-success="fileSuccess" :options="dropzoneOptions">
         </vue-dropzone>
       </b-row>
-      <div v-if="!not_classified"> 
+      <div v-if="!notClassified"> 
         <b-row class="justify-content-center" >
-          <h2>{{food_class}}</h2>
+          <h2>{{predFood.food_class}}</h2>
         </b-row>
       </div>
-      <b-row class="justify-content-center mt-5">
+      <b-row class="justify-content-center mt-5" v-if="!notClassified">
         <b-col class="col-md-4">
-         <foodcomposition/>
+         <foodcomposition v-bind:predFood="predFood"></foodcomposition>
         </b-col>
         <b-col class="col-md-4">
         </b-col>
@@ -38,9 +38,9 @@
 <script>
 import vue2Dropzone from 'vue2-dropzone'
 import axios from 'axios'
-import c3 from 'c3'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import Foodcomposition from './FoodComposition.vue'
+
 import Food from '../models/food.js'
 
 export default {
@@ -61,45 +61,48 @@ export default {
           addRemoveLinks: true,
           maxFiles: 1
       },
-      not_classified: true,
-      food_class: '',
-      nutr_descr: '',
-      nutrition_data: {
-        water_g: 0,
-        energy_kcal: 0,
-        protein_g: 0,
-        carbohydtr_g: 0,
-        fiber_g: 0,
-        sugar_g: 0,
-        lipid_g: 0
-      },
+      notClassified: true,
+      predFood: new Food('None','None',20,20,20,20,20,20,20)
     }
   },
   methods:{
     fileSuccess (file, response){  
-      var self = this;
-      console.log(response)
-      this.food_class = this.class_to_description(response["food_class"]);
-      this.nutr_descr = response["nutr_class"]; 
-      this.ndb_no = response["nutr_ndb_no"];
+      //predFood = this.predFood
+      var food_class = response["food_class"]
+      var food_descr = response["nutr_class"]; 
+      var ndb_no = response["nutr_ndb_no"];
 
       axios.get( process.env.VUE_APP_REPO_API + "/food",{ 
         params:{
-          ndb_no: this.ndb_no
+          ndb_no: ndb_no
         } 
       }).then((response) => {
         console.log(response['data']['results'])
-        self.nutrition_data.protein_g= response['data']['results'][0]['protein_g'];
-        console.log("protein data :" + response['data']['results'][0]['protein_g'])
+        var food_resp = response['data']['results'][0]
+        this.predFood = this.food_from_response(food_resp, food_class, 
+                                                food_descr)
       })
-      this.not_classified = false     
+      this.notClassified = false     
     },
     removedFile (file, error, xhr){
-      console.log("File removed!")
-      this.not_classified = true
+      console.log("File removed!", file)
+      this.notClassified = true
     },
     class_to_description(class_name){
       return (class_name.charAt(0).toUpperCase() + class_name.slice(1)).replace('_', ' ');
+    },
+    food_from_response(food_resp, food_class, food_descr){
+      var food = new Food('','',0,0,0,0,0,0,0)
+      food.descr = food_descr
+      food.food_class = this.class_to_description(food_class) 
+      food.protein_g= food_resp['protein_g'];
+      food.water_g= food_resp['water_g'];
+      food.fiber_g= food_resp['fiber_g'];
+      food.carbohydtr_g= food_resp['carbohydtr_g'];
+      food.energy_kcal= food_resp['energy_kcal'];
+      food.sugar_g= food_resp['sugar_g'];
+      food.lipid_g= food_resp['lipid_g'];
+      return food
     } 
   },
   mounted(){
