@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.urls import include, path
 from rest_framework import routers
+from rest_framework.authtoken.views import obtain_auth_token
 from foodrition_backend import views
 from foodrition_api.startup import foodrition_api_startup_func
 from django.conf.urls import url
