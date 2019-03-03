@@ -42,7 +42,6 @@ import axios from 'axios'
 import 'vue2-dropzone/dist/vue2Dropzone.min.css'
 import Foodcomposition from './FoodComposition.vue'
 import Foodtable from './FoodTable.vue'
-
 import Food from '../models/food.js'
 
 export default {
@@ -62,7 +61,10 @@ export default {
           maxFilesize: 0.5,
           dictDefaultMessage: "Drop your Image here!",
           addRemoveLinks: true,
-          maxFiles: 1
+          maxFiles: 1,
+          headers: {
+            'Authorization': this.$store.getters.token
+          }   
       },
       notClassified: true,
       predFood: new Food('None','None',20,20,20,20,20,20,20)
@@ -75,7 +77,7 @@ export default {
       var food_descr = response["nutr_class"]; 
       var ndb_no = response["nutr_ndb_no"];
 
-      axios.get( process.env.VUE_APP_REPO_API + "/food",{ 
+      this.$http.get( process.env.VUE_APP_REPO_API + "/food",{ 
         params:{
           ndb_no: ndb_no
         } 

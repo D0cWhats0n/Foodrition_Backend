@@ -11,7 +11,6 @@ export default {
   name: 'impressum'
 }
 </script>
-
 <style>
 #impressum {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -21,7 +20,6 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-
 h1, h2 {
   font-weight: normal;
 }
