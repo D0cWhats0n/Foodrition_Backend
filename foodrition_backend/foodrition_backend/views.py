@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from foodrition_api.services.ml_model import ModelFactory
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
 from django.http import JsonResponse
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -18,6 +19,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
+    permission_classes = (IsAuthenticated,)
 
 
 class FoodViewSet(viewsets.ModelViewSet):
@@ -26,6 +28,7 @@ class FoodViewSet(viewsets.ModelViewSet):
     """
     queryset = Food.objects.all().order_by('id')
     serializer_class = FoodSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         """ allow rest api to filter by description """
@@ -47,6 +50,7 @@ class ClassificationAPI(APIView):
     returned.
     """
     parser_class = (FileUploadParser,)
+    permission_classes = (IsAuthenticated,) 
 
     def post(self, request, format=None):
         print("Request to classify file")
